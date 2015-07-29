@@ -1,16 +1,17 @@
-# Original credit: https://github.com/jpetazzo/dockvpn
-
+# Original credits:
+#   https://github.com/jpetazzo/dockvpn
+#   https://github.com/kylemanna/docker-openvpn
+#
 # Leaner build then Ubunutu
-FROM debian:jessie
+FROM shift/ubuntu:15.04
 
-MAINTAINER Kyle Manna <kyle@kylemanna.com>
+MAINTAINER Vincent Palmer <shift@someone.section.me>
 
-RUN apt-get update && apt-get install -y openvpn iptables git-core
-
-# Update checkout to use tags when v3.0 is finally released
-RUN git clone https://github.com/OpenVPN/easy-rsa.git /usr/local/share/easy-rsa
-RUN cd /usr/local/share/easy-rsa && git checkout -b tested 89f369c5bbd13fbf0da2ea6361632c244e8af532
-RUN ln -s /usr/local/share/easy-rsa/easyrsa3/easyrsa /usr/local/bin
+RUN apt-get update && apt-get install --yes openvpn iptables git-core \
+  && git clone https://github.com/OpenVPN/easy-rsa.git /usr/local/share/easy-rsa \
+  && cd /usr/local/share/easy-rsa && git checkout -b tested 89f369c5bbd13fbf0da2ea6361632c244e8af532 \
+  && ln -s /usr/local/share/easy-rsa/easyrsa3/easyrsa /usr/local/bin \
+  && rm -rf /var/lib/apt/lists/*
 
 # Needed by scripts
 ENV OPENVPN /etc/openvpn
