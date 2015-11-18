@@ -23,6 +23,8 @@ VOLUME ["/etc/openvpn"]
 
 # Internally uses port 1194, remap using docker
 EXPOSE 1194/udp
+# Management interface.
+EXPOSE 7507/tcp
 
 WORKDIR /etc/openvpn
 CMD ["ovpn_run"]
