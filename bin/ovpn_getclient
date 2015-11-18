@@ -4,7 +4,10 @@
 # Get an OpenVPN client configuration file
 #
 
-set -ex
+if [ "$DEBUG" ];
+then
+  set -ex
+fi
 
 source "$OPENVPN/ovpn_env.sh"
 cn=$1
@@ -12,7 +15,7 @@ cn=$1
 if [ ! -f "$EASYRSA_PKI/private/${cn}.key" ]; then
     easyrsa build-server-full $cn nopass
 fi
-
+echo "---------------START OF CONFIG----------"
 cat <<EOF
 client
 nobind
@@ -44,3 +47,5 @@ EOF
 if [ "$OVPN_DEFROUTE" != "0" ];then
     echo "redirect-gateway def1"
 fi
+
+echo "---------------END OF CONFIG----------"
